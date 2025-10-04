@@ -1,0 +1,42 @@
+{
+    "figure_size": [
+        20,
+        12
+    ],
+    "dpi": 300,
+    "font_size": 12,
+    "random_state": 42,
+    "test_size": 0.3,
+    "n_clusters": 4,
+    "max_features_tfidf": 100,
+    "color_palette": "husl",
+    "output_formats": [
+        "png",
+        "pdf"
+    ],
+    "logging_level": "INFO",
+    "experiments": {
+        "linear_regression": {
+            "max_iter": 1000,
+            "normalize": false
+        },
+        "svm": {
+            "kernel": "rbf",
+            "C": 1.0,
+            "gamma": "scale"
+        },
+        "random_forest": {
+            "n_estimators": 100,
+            "max_depth": 10,
+            "min_samples_split": 2
+        },
+        "kmeans": {
+            "n_init": 10,
+            "max_iter": 300
+        },
+        "pca": {
+            "n_components": null,
+            "variance_threshold": 0.95
+        }
+    }
+}
