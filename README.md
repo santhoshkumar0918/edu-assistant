@@ -17,13 +17,21 @@ python save_graphs_experiments.py
 # Get 9 beautiful PNG visualization files!
 ```
 
-### **Option 2: Interactive Jupyter Notebook**
+### **Option 2: Generate Comprehensive Results Report** ⭐ NEW!
+```bash
+cd notebooks1
+python generate_results_report.py
+# Generates: Tabulated Results, Performance Graphs, 
+# Confusion Matrices, and Comparison with Existing Work!
+```
+
+### **Option 3: Interactive Jupyter Notebook**
 ```bash
 jupyter notebook TNPSC_ML_Experiments.ipynb
 # Execute cells for interactive analysis
 ```
 
-### **Option 3: Chat-based ML Assistant**
+### **Option 4: Chat-based ML Assistant**
 ```bash
 python ml_assistant.py
 # Natural language interface with ML responses
@@ -57,7 +65,20 @@ Each experiment generates **professional dashboard-style visualizations**:
 
 ```
 notebooks1/
+├── 📁 outputs/                    # 🎨 Generated visualizations & reports
+│   ├── 📁 experiment_visualizations/     # 9 experiment PNG files
+│   │   ├── experiment_1_dataset_visualization.png
+│   │   ├── experiment_2_statistical_analysis.png
+│   │   └── ... (9 beautiful visualizations)
+│   └── 📁 results_report/               # Comprehensive results analysis
+│       ├── results_tabulated.png        # Performance metrics table
+│       ├── results_performance_graphs.png # Model comparison charts
+│       ├── results_confusion_matrices.png # Model evaluation matrices
+│       ├── results_comparison_existing_work.png # Benchmark analysis
+│       ├── results_feature_importance.png # Feature importance analysis
+│       └── results_summary.txt          # Complete project summary
 ├── save_graphs_experiments.py      # 🎨 Main file - Beautiful visualizations
+├── generate_results_report.py      # 📊 Comprehensive results generator
 ├── tnpsc_assistant.py             # 🤖 Core TNPSC Assistant
 ├── ml_assistant.py                # 💬 Chat-based ML interface
 ├── TNPSC_ML_Experiments.ipynb     # 📓 Jupyter notebook
@@ -67,7 +88,9 @@ notebooks1/
 │   ├── questions/                 # Question datasets
 │   ├── syllabus/                  # Syllabus content
 │   └── pdf_papers/                # PDF papers for processing
-└── *.png                          # 🖼️ Generated visualization files
+├── README.md                      # 📖 This file
+├── requirements.txt               # 📦 Python dependencies
+└── venv/                         # 🐍 Virtual environment
 ```
 
 ## 🎯 TNPSC Units Covered
@@ -105,7 +128,7 @@ python save_graphs_experiments.py
 
 ## 🎨 Generated Visualizations
 
-Running the experiments creates these beautiful PNG files:
+Running the experiments creates these beautiful PNG files in `outputs/experiment_visualizations/`:
 
 1. **`experiment_1_dataset_visualization.png`** - Dataset overview dashboard
 2. **`experiment_2_statistical_analysis.png`** - Statistical analysis charts
@@ -117,7 +140,27 @@ Running the experiments creates these beautiful PNG files:
 8. **`experiment_8_decision_tree.png`** - Decision tree visualization
 9. **`experiment_9_ensemble.png`** - Ensemble learning comparison
 
-## 🤖 Key Features
+## 📊 Results Report Generation ⭐ NEW!
+
+Generate comprehensive results in `outputs/results_report/`:
+
+```bash
+python generate_results_report.py
+```
+
+### **What You Get:**
+1. **📋 Tabulated Results** - Performance metrics tables with rankings
+2. **📊 Performance Graphs** - 6 different comparison charts
+3. **🔥 Confusion Matrices** - For all 5 classification models
+4. **🏆 Comparison with Existing Work** - Benchmark analysis
+
+### **Output Files:**
+- `results_tabulated.png` - Complete metrics table
+- `results_performance_graphs.png` - Visual comparisons
+- `results_confusion_matrices.png` - All confusion matrices
+- `results_comparison_existing_work.png` - Benchmark comparison
+- `results_feature_importance.png` - Feature analysis
+- `results_summary.txt` - Complete project summary
 
 ### **1. Intelligent Question Analysis**
 - ✅ Automatic categorization by subject unit
@@ -225,8 +268,35 @@ python ml_assistant.py
 ### **Troubleshooting**
 - ✅ Install packages: `pip install scikit-learn pandas matplotlib seaborn`
 - ✅ Download NLTK data: Run setup commands above
-- ✅ Check PNG files: Generated in current directory
+- ✅ Check PNG files: Generated in `outputs/experiment_visualizations/`
+- ✅ Check results: Generated in `outputs/results_report/`
 - ✅ View graphs: Open PNG files with any image viewer
+
+---
+
+## 📊 Results Report Generation ⭐ NEW!
+
+Generate comprehensive results for your project presentation:
+
+```bash
+python generate_results_report.py
+```
+
+### **What You Get:**
+1. **📋 Tabulated Results** - Performance metrics tables with rankings
+2. **📊 Performance Graphs** - 6 different comparison charts
+3. **🔥 Confusion Matrices** - For all 5 classification models
+4. **🏆 Comparison with Existing Work** - Benchmark analysis
+
+### **Output Files:**
+- `results_tabulated.png` - Complete metrics table
+- `results_performance_graphs.png` - Visual comparisons
+- `results_confusion_matrices.png` - All confusion matrices
+- `results_comparison_existing_work.png` - Benchmark comparison
+- `model_results.csv` - Detailed data
+- `comparison_with_existing_work.csv` - Comparison data
+
+**Perfect for:** Project reports, presentations, and viva defense! 🎓
 
 ---
 
@@ -236,9 +306,16 @@ python ml_assistant.py
 **Output**: Beautiful visualizations ready for presentation  
 **Usage**: Perfect for college projects and ML learning
 
-**Run this command to get started:**
+### **Quick Commands:**
 ```bash
+# Run all 9 experiments
 python save_graphs_experiments.py
+
+# Generate comprehensive results report
+python generate_results_report.py
+
+# Interactive notebook
+jupyter notebook TNPSC_ML_Experiments.ipynb
 ```
 
-Choose option `0` and enjoy 9 beautiful ML experiment visualizations! 🎨📊✨
+Enjoy beautiful ML experiment visualizations and comprehensive results! 🎨📊✨
