@@ -37,31 +37,46 @@ class TNPSCChatAssistant:
         print("="*60)
     
     def _train_models(self):
-        """Train ML models for predictions"""
+        """Train ML models for predictions with better accuracy"""
         print("🔧 Training ML models...")
         
-        # Prepare features
+        # Prepare enhanced features
         self.df['question_length'] = self.df['question'].str.len()
         self.df['word_count'] = self.df['question'].str.split().str.len()
+        self.df['has_numbers'] = self.df['question'].str.contains(r'\d').astype(int)
+        self.df['has_question_mark'] = self.df['question'].str.contains(r'\?').astype(int)
+        self.df['avg_word_length'] = self.df['question'].apply(
+            lambda x: np.mean([len(word) for word in str(x).split()]) if len(str(x).split()) > 0 else 0
+        )
         
-        # Train difficulty predictor
-        X = self.df[['unit', 'year', 'question_length', 'word_count']]
+        # Train difficulty predictor with more features
+        X = self.df[['unit', 'year', 'question_length', 'word_count', 
+                     'has_numbers', 'has_question_mark', 'avg_word_length']]
         y = self.df['difficulty']
         
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
         
-        self.difficulty_model = RandomForestClassifier(n_estimators=50, random_state=42)
+        # Use better hyperparameters
+        self.difficulty_model = RandomForestClassifier(
+            n_estimators=100, 
+            max_depth=10,
+            min_samples_split=5,
+            random_state=42
+        )
         self.difficulty_model.fit(X_train, y_train)
         
         accuracy = accuracy_score(y_test, self.difficulty_model.predict(X_test))
         print(f"   ✅ Difficulty Predictor trained (Accuracy: {accuracy:.2%})")
     
     def predict_difficulty(self, unit, year, question_text):
-        """Predict difficulty of a question"""
+        """Predict difficulty of a question with enhanced features"""
         question_length = len(question_text)
         word_count = len(question_text.split())
+        has_numbers = 1 if any(char.isdigit() for char in question_text) else 0
+        has_question_mark = 1 if '?' in question_text else 0
+        avg_word_length = np.mean([len(word) for word in question_text.split()]) if word_count > 0 else 0
         
-        features = [[unit, year, question_length, word_count]]
+        features = [[unit, year, question_length, word_count, has_numbers, has_question_mark, avg_word_length]]
         prediction = self.difficulty_model.predict(features)[0]
         
         return prediction
@@ -130,24 +145,57 @@ class TNPSCChatAssistant:
         return insights
     
     def _parse_natural_input(self, user_input):
-        """Parse natural language input to extract intent and parameters"""
+        """Parse natural language input to extract intent and parameters - Super casual!"""
         import re
         
         text = user_input.lower().strip()
         
-        # Extract numbers from text
+        # Extract numbers from text (including written numbers)
         numbers = re.findall(r'\d+', text)
         
-        # Extract unit names
+        # Convert written numbers to digits
+        number_words = {
+            'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
+            'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10,
+            'fifteen': 15, 'twenty': 20, 'thirty': 30, 'forty': 40, 'fifty': 50
+        }
+        for word, num in number_words.items():
+            if word in text:
+                numbers.append(str(num))
+        
+        # Super comprehensive unit mapping with casual variations
         unit_mapping = {
-            'science': 1, 'general science': 1,
-            'current': 2, 'current events': 2, 'events': 2,
-            'geography': 3, 'geo': 3,
-            'history': 4, 'culture': 4,
-            'polity': 5, 'indian polity': 5,
-            'economy': 6, 'indian economy': 6, 'economic': 6,
-            'national': 7, 'movement': 7, 'national movement': 7,
-            'mental': 8, 'ability': 8, 'mental ability': 8, 'aptitude': 8
+            # Unit 1 - Science
+            'science': 1, 'general science': 1, 'sci': 1, 'physics': 1, 
+            'chemistry': 1, 'biology': 1, 'bio': 1, 'chem': 1,
+            
+            # Unit 2 - Current Events
+            'current': 2, 'current events': 2, 'events': 2, 'news': 2,
+            'current affairs': 2, 'affairs': 2, 'recent': 2,
+            
+            # Unit 3 - Geography
+            'geography': 3, 'geo': 3, 'places': 3, 'location': 3,
+            'earth': 3, 'map': 3, 'world': 3,
+            
+            # Unit 4 - History & Culture
+            'history': 4, 'culture': 4, 'historical': 4, 'ancient': 4,
+            'medieval': 4, 'modern': 4, 'past': 4,
+            
+            # Unit 5 - Polity
+            'polity': 5, 'indian polity': 5, 'politics': 5, 'government': 5,
+            'constitution': 5, 'governance': 5, 'parliament': 5,
+            
+            # Unit 6 - Economy
+            'economy': 6, 'indian economy': 6, 'economic': 6, 'economics': 6,
+            'gdp': 6, 'budget': 6, 'finance': 6, 'money': 6,
+            
+            # Unit 7 - National Movement
+            'national': 7, 'movement': 7, 'national movement': 7, 'freedom': 7,
+            'independence': 7, 'struggle': 7,
+            
+            # Unit 8 - Mental Ability
+            'mental': 8, 'ability': 8, 'mental ability': 8, 'aptitude': 8,
+            'reasoning': 8, 'logic': 8, 'maths': 8, 'math': 8
         }
         
         detected_unit = None
@@ -158,7 +206,9 @@ class TNPSCChatAssistant:
         
         # If no keyword match, check for "unit X" pattern
         if not detected_unit and numbers:
-            detected_unit = int(numbers[0]) if int(numbers[0]) in UNITS else None
+            first_num = int(numbers[0])
+            if 1 <= first_num <= 8:
+                detected_unit = first_num
         
         return {
             'text': text,
@@ -171,17 +221,19 @@ class TNPSCChatAssistant:
         print("\n" + "="*60)
         print("🎓 TNPSC AI EXAM PREPARATION ASSISTANT")
         print("="*60)
-        print("\nHello! I'm your AI assistant for TNPSC exam preparation.")
-        print("I can help you with:")
-        print("  • Generate practice quizzes")
-        print("  • Create study plans")
-        print("  • Predict question difficulty")
-        print("  • Provide unit statistics")
-        print("  • Search questions by topic")
-        print("\nJust talk naturally! Try:")
-        print("  'generate quiz for science'")
-        print("  'show me stats for unit 1'")
-        print("  'create a 30 day study plan'")
+        print("\nHey! 👋 I'm your AI buddy for TNPSC exam prep!")
+        print("\nI can help you with:")
+        print("  • Generate practice quizzes 📝")
+        print("  • Create study plans 📅")
+        print("  • Show unit statistics 📊")
+        print("  • Search questions by topic 🔍")
+        print("  • Predict question difficulty 🎯")
+        print("\nJust talk naturally! Try saying:")
+        print("  'give me a quiz on science'")
+        print("  'show me stats for history'")
+        print("  'I need a 30 day study plan'")
+        print("  'find questions about water'")
+        print("\nType 'help' anytime if you're stuck!")
         print("="*60)
         
         while True:
@@ -214,15 +266,17 @@ class TNPSCChatAssistant:
                         print("\n💡 Which unit would you like stats for? (1-8)")
                         print("   Try: 'stats for science' or 'stats 1'")
                 
-                # Generate quiz
-                elif any(word in cmd for word in ['quiz', 'test', 'practice', 'questions', 'generate']):
+                # Generate quiz - super casual variations
+                elif any(word in cmd for word in ['quiz', 'test', 'practice', 'questions', 'generate', 
+                                                   'give me', 'show me', 'need', 'want', 'get me',
+                                                   'gimme', 'can i get', 'can you give']):
                     if parsed['unit']:
                         self._handle_quiz_smart(parsed['unit'], parsed['numbers'])
                     elif parsed['numbers']:
                         self._handle_quiz_smart(int(parsed['numbers'][0]), parsed['numbers'][1:])
                     else:
                         print("\n💡 Which unit would you like a quiz for? (1-8)")
-                        print("   Try: 'quiz for science' or 'generate quiz unit 1'")
+                        print("   Try: 'quiz for science' or 'give me some questions on history'")
                 
                 # Study plan
                 elif any(word in cmd for word in ['plan', 'schedule', 'study', 'prepare']):
@@ -258,24 +312,45 @@ class TNPSCChatAssistant:
                 elif any(word in cmd for word in ['units', 'list', 'show units', 'all units', 'subjects']):
                     self._show_units()
                 
-                # Greetings
-                elif any(word in cmd for word in ['hi', 'hello', 'hey', 'greetings']):
-                    print("\n🤖 Assistant: Hello! Ready to ace your TNPSC exam? What would you like to do?")
-                    print("   Try: 'generate quiz', 'show units', or 'create study plan'")
+                # Greetings - super casual
+                elif any(word in cmd for word in ['hi', 'hello', 'hey', 'greetings', 'sup', 'yo', 'wassup']):
+                    responses = [
+                        "Hey there! 👋 Ready to crush that TNPSC exam? What do you need?",
+                        "Hello! 😊 Let's get you prepared! Want a quiz or study plan?",
+                        "Hi! 🎯 What can I help you with today? Quiz, stats, or study plan?"
+                    ]
+                    print(f"\n🤖 Assistant: {np.random.choice(responses)}")
                 
-                # Thanks
-                elif any(word in cmd for word in ['thanks', 'thank you', 'appreciate']):
-                    print("\n🤖 Assistant: You're welcome! Keep up the great work! 💪")
+                # Thanks - casual responses
+                elif any(word in cmd for word in ['thanks', 'thank you', 'appreciate', 'thx', 'ty']):
+                    responses = [
+                        "You're welcome! Keep crushing it! 💪",
+                        "No problem! You got this! 🎯",
+                        "Anytime! Keep up the awesome work! ⭐",
+                        "Happy to help! Go ace that exam! 🚀"
+                    ]
+                    print(f"\n🤖 Assistant: {np.random.choice(responses)}")
                 
-                # General conversation
+                # Motivation requests
+                elif any(word in cmd for word in ['motivate', 'motivation', 'encourage', 'nervous', 'scared']):
+                    responses = [
+                        "You've got this! 💪 Every question you practice gets you closer to success!",
+                        "Believe in yourself! 🌟 You're putting in the work, and it will pay off!",
+                        "Stay focused and consistent! 🎯 Success is just around the corner!",
+                        "Don't worry! 😊 With practice and dedication, you'll ace this exam!"
+                    ]
+                    print(f"\n🤖 Assistant: {np.random.choice(responses)}")
+                
+                # General conversation - more helpful
                 else:
-                    print(f"\n🤖 Assistant: I'm not quite sure what you mean.")
-                    print("   Try asking me to:")
-                    print("   • 'generate quiz for unit 1'")
-                    print("   • 'show stats for science'")
-                    print("   • 'create 30 day plan'")
-                    print("   • 'search water'")
-                    print("   Or type 'help' for all commands")
+                    print(f"\n🤖 Assistant: Hmm, I'm not sure I got that. Let me help you out!")
+                    print("   You can say things like:")
+                    print("   • 'give me a quiz on science'")
+                    print("   • 'show me history stats'")
+                    print("   • 'I need a 30 day plan'")
+                    print("   • 'find questions about water'")
+                    print("   • 'show all units'")
+                    print("\n   Just talk naturally - I'll understand! 😊")
                     
             except KeyboardInterrupt:
                 print("\n\n🎉 Good luck with your TNPSC preparation! Goodbye!")
