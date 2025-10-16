@@ -8,3 +8,4 @@ timestamp,input,intent,confidence,correct
 2025-10-15T21:40:29.334935,unit 1,unknown,0.0,True
 2025-10-15T21:40:40.492308,stats for science,stats,0.7071067811865476,True
 2025-10-15T21:45:13.676253,show my data,stats,1.0,True
+2025-10-16T11:58:58.989547,hi,greeting,1.0,True

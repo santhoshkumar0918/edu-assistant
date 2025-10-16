@@ -1,7 +1,7 @@
 {
   "kumar": {
     "name": "kumar",
-    "total_sessions": 1,
+    "total_sessions": 2,
     "quizzes_taken": 0,
     "questions_answered": 0,
     "correct_answers": 0,
@@ -9,7 +9,62 @@
     "weakest_units": [],
     "strongest_units": [],
     "streak_days": 0,
-    "last_login": "2025-10-15T21:39:17.805427",
+    "last_login": "2025-10-16T11:58:44.368648",
+    "unit_performance": {
+      "1": {
+        "attempts": 0,
+        "correct": 0,
+        "avg_difficulty": 1
+      },
+      "2": {
+        "attempts": 0,
+        "correct": 0,
+        "avg_difficulty": 1
+      },
+      "3": {
+        "attempts": 0,
+        "correct": 0,
+        "avg_difficulty": 1
+      },
+      "4": {
+        "attempts": 0,
+        "correct": 0,
+        "avg_difficulty": 1
+      },
+      "5": {
+        "attempts": 0,
+        "correct": 0,
+        "avg_difficulty": 1
+      },
+      "6": {
+        "attempts": 0,
+        "correct": 0,
+        "avg_difficulty": 1
+      },
+      "7": {
+        "attempts": 0,
+        "correct": 0,
+        "avg_difficulty": 1
+      },
+      "8": {
+        "attempts": 0,
+        "correct": 0,
+        "avg_difficulty": 1
+      }
+    },
+    "tone_preference": "friendly"
+  },
+  "vanakam": {
+    "name": "vanakam",
+    "total_sessions": 0,
+    "quizzes_taken": 0,
+    "questions_answered": 0,
+    "correct_answers": 0,
+    "avg_score": 0.0,
+    "weakest_units": [],
+    "strongest_units": [],
+    "streak_days": 0,
+    "last_login": "2025-10-16T11:58:56.782143",
     "unit_performance": {
       "1": {
         "attempts": 0,
