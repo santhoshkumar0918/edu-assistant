@@ -1,0 +1,6 @@
+Model,Algorithm,Parameters,Accuracy,Precision,Recall,F1-Score,Training Time
+Random Forest,Ensemble Learning,"n_estimators=100, max_depth=10",66.7%,0.44,0.67,0.53,0.1s
+Logistic Regression,Multinomial,"max_iter=1000, C=1.0",66.7%,0.44,0.67,0.53,0.1s
+SVM,RBF Kernel,"C=1.0, gamma=scale",66.7%,0.44,0.67,0.53,0.0s
+Decision Tree,CART,"max_depth=10, min_samples=5",0.0%,0.00,0.00,0.00,0.0s
+Naive Bayes,Gaussian,default,33.3%,0.33,0.33,0.33,0.0s

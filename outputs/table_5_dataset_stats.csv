@@ -1,0 +1,10 @@
+Metric,Value,Description
+Total Questions,15,Complete dataset size
+Training Set,12 (80%),Questions used for training
+Test Set,3 (20%),Questions used for testing
+Features,7,Engineered feature dimensions
+Classes,3,Difficulty levels (Easy/Medium/Hard)
+Units Covered,8,TNPSC subject units
+Years Covered,3,2021-2023
+Avg Question Length,52 characters,Mean character count
+Class Distribution,"Easy: 60.0%, Medium: 20.0%, Hard: 20.0%",Balanced dataset

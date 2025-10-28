@@ -1,0 +1,11 @@
+Layer,Component,Technology/Algorithm,Input,Output,Purpose
+Input Layer,Text Preprocessing,Python String Processing,Raw user text,Cleaned text,Normalize input
+,Entity Extraction,Regex + Pattern Matching,User query,"Units, numbers, keywords",Extract parameters
+NLU Layer,Intent Detection,TF-IDF + Cosine Similarity,Cleaned text,Intent + confidence,Understand user goal
+,Emotion Detection,Rule-based NLP,User text,Emotion state,Detect user mood
+Feature Layer,Feature Engineering,Statistical Analysis,Question data,7D feature vector,Prepare ML input
+ML Core,Random Forest,Ensemble Learning,7D features,Difficulty prediction,Classify questions
+Intelligence,Adaptive Engine,Custom Algorithm,User performance,Recommendations,Personalize learning
+,Knowledge Base,Dictionary Lookup,Topic queries,Explanations,Teach concepts
+,Profile Manager,JSON Storage,User data,Persistent profiles,Track progress
+Output Layer,Response Generator,Template + NLG,All components,Natural language,Generate responses

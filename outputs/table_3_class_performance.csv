@@ -1,0 +1,6 @@
+Difficulty Class,Precision,Recall,F1-Score,Support,Average Precision (AP)
+Easy,0.67,1.00,0.80,2,0.583
+Medium,0.00,0.00,0.00,0,0.000
+Hard,0.00,0.00,0.00,1,0.333
+Macro Avg,0.33,0.50,0.40,3,0.305
+Weighted Avg,0.44,0.67,0.53,3,0.305
